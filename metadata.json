@@ -1,0 +1,6 @@
+{
+  "name": "Outpost: Mission Survival",
+  "description": "Third-person sci-fi space-exploration survival RPG. Explore, build, and survive Moon and Mars outposts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer Astronaut Helmet Dome -->
+    <path
+        android:fillColor="#ECEFF1"
+        android:pathData="M54,26 C41,26 31,36 31,49 C31,61 38,71 50,73 L50,77 L38,81 L38,84 L70,84 L70,81 L58,77 L58,73 C70,71 77,61 77,49 C77,36 67,26 54,26 Z" />
+
+    <!-- Reflective Golden Curved Visor Shield -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M54,34 C44,34 37,41 37,50 C37,59 44,66 54,66 C64,66 71,59 71,50 C71,41 64,34 54,34 Z" />
+
+    <!-- Specular Highlight Curve on Visor -->
+    <path
+        android:fillColor="#FFFDE7"
+        android:pathData="M54,37 C47,37 42,42 41,48 C43,44 48,41 54,41 C60,41 65,44 67,48 C66,42 61,37 54,37 Z" />
+
+    <!-- Cyan Status Beacon light -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M32,46 L29,46 L29,52 L32,52 Z" />
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M76,46 L79,46 L79,52 L76,52 Z" />
+
+    <!-- Chest PLSS collar accent -->
+    <path
+        android:fillColor="#0288D1"
+        android:pathData="M46,80 L62,80 L60,83 L48,83 Z" />
+</vector>
