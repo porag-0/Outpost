@@ -129,4 +129,47 @@ class ExampleRobolectricTest {
         println("TOTAL MESHES: ${meshes.size}, TOTAL VERTS: $totalVerts, TOTAL FACES: $totalFaces")
         assertTrue(totalFaces > 0)
     }
+
+    @Test
+    fun `test collision prevents passing through habitat dome`() {
+        val (resX, resZ) = com.example.game.engine3d.CollisionSystem.resolvePosition(
+            startX = 0f,
+            startZ = 8.5f,
+            desiredX = 0f,
+            desiredZ = 2.0f, // Tries to walk straight into dome center
+            entityRadius = 0.45f
+        )
+        // Must be stopped by dome or airlock
+        val distToCenter = kotlin.math.hypot(resX, resZ)
+        assertTrue("Character must not penetrate dome: dist = $distToCenter", distToCenter >= 5.65f)
+        assertTrue("Character must not penetrate airlock door: resZ = $resZ", resZ >= 8.25f)
+    }
+
+    @Test
+    fun `test collision prevents passing through boulder`() {
+        val (resX, resZ) = com.example.game.engine3d.CollisionSystem.resolvePosition(
+            startX = 18f,
+            startZ = 22f,
+            desiredX = 18f,
+            desiredZ = 19f, // Boulder center at 18, 19
+            entityRadius = 0.45f
+        )
+        val distToBoulder = kotlin.math.hypot(resX - 18f, resZ - 19f)
+        assertTrue("Character must not penetrate boulder: dist = $distToBoulder", distToBoulder >= 2.10f)
+    }
+
+    @Test
+    fun `test collision sliding along wall without tunneling`() {
+        // Move towards airlock wall diagonally
+        val (resX, resZ) = com.example.game.engine3d.CollisionSystem.resolvePosition(
+            startX = -3.0f,
+            startZ = 6.7f,
+            desiredX = 0f, // Towards center of airlock
+            desiredZ = 7.5f, // Moving forward along wall
+            entityRadius = 0.45f
+        )
+        // Must slide along wall, not penetrate
+        assertTrue("resX must remain outside airlock wall: resX = $resX", resX <= -1.25f - 0.45f + 0.05f)
+        assertTrue("resZ should have progressed along wall: resZ = $resZ", resZ > 6.7f)
+    }
 }

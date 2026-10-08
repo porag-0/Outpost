@@ -208,21 +208,21 @@ object MeshFactory {
                 pelvisYaw = sinP * 0.12f
                 torsoYaw = -pelvisYaw * 0.65f
 
-                leftHipAngle = sinP * 0.46f
-                rightHipAngle = -sinP * 0.46f
+                leftHipAngle = sinP * 0.44f
+                rightHipAngle = -sinP * 0.44f
 
-                leftKneeBend = (-sinP).coerceAtLeast(0f) * 0.62f + landingSquat * 0.35f
-                rightKneeBend = (sinP).coerceAtLeast(0f) * 0.62f + landingSquat * 0.35f
+                leftKneeBend = (sinP).coerceAtLeast(0f) * 0.65f + landingSquat * 0.35f
+                rightKneeBend = (-sinP).coerceAtLeast(0f) * 0.65f + landingSquat * 0.35f
 
-                leftAnkleAngle = (-cosP * 0.22f).coerceIn(-0.25f, 0.35f)
-                rightAnkleAngle = (cosP * 0.22f).coerceIn(-0.25f, 0.35f)
+                leftAnkleAngle = (-sinP * 0.20f).coerceIn(-0.25f, 0.30f)
+                rightAnkleAngle = (sinP * 0.20f).coerceIn(-0.25f, 0.30f)
 
                 leftArmAngle = -sinP * 0.40f
                 rightArmAngle = sinP * 0.35f
                 leftForearmAngle = 0.22f + abs(sinP) * 0.18f
                 rightForearmAngle = 0.20f + abs(sinP) * 0.15f
 
-                torsoBob = abs(sinP) * 0.07f
+                torsoBob = abs(sinP) * 0.05f
                 torsoPitch += -0.07f
                 torsoRoll += -sinP * 0.03f
                 hipSway = sinP * 0.04f
@@ -235,14 +235,14 @@ object MeshFactory {
                 pelvisYaw = sinP * 0.18f
                 torsoYaw = -pelvisYaw * 0.70f
 
-                leftHipAngle = sinP * 0.75f
-                rightHipAngle = -sinP * 0.75f
+                leftHipAngle = sinP * 0.70f
+                rightHipAngle = -sinP * 0.70f
 
-                leftKneeBend = (-sinP).coerceAtLeast(0f) * 0.95f + landingSquat * 0.45f
-                rightKneeBend = (sinP).coerceAtLeast(0f) * 0.95f + landingSquat * 0.45f
+                leftKneeBend = (sinP).coerceAtLeast(0f) * 0.95f + landingSquat * 0.45f
+                rightKneeBend = (-sinP).coerceAtLeast(0f) * 0.95f + landingSquat * 0.45f
 
-                leftAnkleAngle = (-cosP * 0.35f).coerceIn(-0.35f, 0.45f)
-                rightAnkleAngle = (cosP * 0.35f).coerceIn(-0.35f, 0.45f)
+                leftAnkleAngle = (-sinP * 0.30f).coerceIn(-0.30f, 0.35f)
+                rightAnkleAngle = (sinP * 0.30f).coerceIn(-0.30f, 0.35f)
 
                 leftArmAngle = -sinP * 0.70f
                 rightArmAngle = sinP * 0.65f
@@ -434,6 +434,19 @@ object MeshFactory {
         addBox(rightBootCenter, Vector3(0.24f, 0.18f, 0.35f), 0xFF212121, rotX = rightBootAngle, rotZ = torsoRoll)
         addBox(rightBootCenter + Vector3(0f, -0.08f, 0f).rotateX(rightBootAngle).rotateZ(torsoRoll), Vector3(0.26f, 0.06f, 0.37f), 0xFF607D8B, rotX = rightBootAngle, rotZ = torsoRoll)
 
+        // Ground Elevation Clamping: Ensure the astronaut's boots/soles NEVER sink into the regolith or floor
+        var minVertexY = Float.MAX_VALUE
+        for (v in vertices) {
+            if (v.y < minVertexY) minVertexY = v.y
+        }
+        if (minVertexY < 0.0f) {
+            val floorLift = -minVertexY
+            for (i in 0 until vertices.size) {
+                val v = vertices[i]
+                vertices[i] = Vector3(v.x, v.y + floorLift, v.z)
+            }
+        }
+
         return Mesh3D(vertices, faces, name = "Astronaut")
     }
 
@@ -526,7 +539,7 @@ object MeshFactory {
     // -------------------------------------------------------------
     // OPTIMIZED SMOOTH PLANETARY TERRAIN MESH WITH FULL ROOF/CEILING INTEGRITY
     // -------------------------------------------------------------
-    fun createTerrain(isMars: Boolean = false, gridSize: Int = 18, spacing: Float = 6.2f): Mesh3D {
+    fun createTerrain(isMars: Boolean = false, gridSize: Int = 24, spacing: Float = 4.6f): Mesh3D {
         val vertices = mutableListOf<Vector3>()
         val faces = mutableListOf<Face3D>()
 

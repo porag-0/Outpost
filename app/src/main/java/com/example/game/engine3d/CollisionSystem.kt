@@ -33,43 +33,46 @@ object CollisionSystem {
     fun initObstacles() {
         worldObstacles.clear()
 
-        // 1. Habitat Geodesic Command Dome (center 0,0, radius 5.1m)
-        worldObstacles.add(Obstacle.Circle(0f, 0f, 5.1f, "HabitatDome"))
-        // Airlock side walls flanking the approach corridor (Z from 5.1m to 7.8m)
-        worldObstacles.add(Obstacle.Box(-1.05f, 6.5f, 0.22f, 1.3f, 0f, "AirlockWallLeft"))
-        worldObstacles.add(Obstacle.Box(1.05f, 6.5f, 0.22f, 1.3f, 0f, "AirlockWallRight"))
+        // 1. Habitat Geodesic Command Dome (center 0,0, radius 5.65m)
+        worldObstacles.add(Obstacle.Circle(0f, 0f, 5.65f, "HabitatDome"))
+        // Pressurized Outer Airlock Vestibule & Heavy Pressure Door (covers z from 5.2m to 8.25m, width 2.4m)
+        worldObstacles.add(Obstacle.Box(0f, 6.72f, 1.25f, 1.55f, 0f, "AirlockModule"))
 
         // 2. Pressurized Utility Conduit Corridors connecting modules
-        worldObstacles.add(Obstacle.Box(7.2f, 3.0f, 0.95f, 3.85f, -0.42f, "CorridorGreenhouse"))
-        worldObstacles.add(Obstacle.Box(4.5f, -2.5f, 0.95f, 2.65f, 0.52f, "CorridorOxygen"))
+        // Corridor to Greenhouse: center (7.2f, 3.0f), length 7.5m, width 1.4m + collars, rotY = -0.42f
+        worldObstacles.add(Obstacle.Box(7.2f, 3.0f, 1.05f, 3.85f, -0.42f, "CorridorGreenhouse"))
+        // Corridor to Oxygen Generator: center (4.5f, -2.5f), length 5.0m, width 1.4m + collars, rotY = 0.52f
+        worldObstacles.add(Obstacle.Box(4.5f, -2.5f, 1.05f, 2.65f, 0.52f, "CorridorOxygen"))
 
         // 3. Dual Photovoltaic Solar Arrays
-        worldObstacles.add(Obstacle.Box(-14f, 10f, 2.7f, 1.4f, 0.4f, "SolarArray1"))
-        worldObstacles.add(Obstacle.Box(-14f, 18f, 2.7f, 1.4f, 0.4f, "SolarArray2"))
+        // Solar Array 1: center (-14f, 10f), width 5.6m, depth 2.2m, rotY = 0.4f
+        worldObstacles.add(Obstacle.Box(-14f, 10f, 2.95f, 1.35f, 0.4f, "SolarArray1"))
+        // Solar Array 2: center (-14f, 18f), width 5.6m, depth 2.2m, rotY = 0.4f
+        worldObstacles.add(Obstacle.Box(-14f, 18f, 2.95f, 1.35f, 0.4f, "SolarArray2"))
 
-        // 4. CELSS Aeroponic Greenhouse
-        worldObstacles.add(Obstacle.Box(14f, 6f, 1.9f, 3.3f, -0.3f, "Greenhouse"))
+        // 4. CELSS Aeroponic Greenhouse: center (14f, 6f), width 3.2m, length 5.8m, rotY = -0.3f
+        worldObstacles.add(Obstacle.Box(14f, 6f, 1.95f, 3.35f, -0.3f, "Greenhouse"))
 
-        // 5. Sabatier Oxygen & Water Reactor
-        worldObstacles.add(Obstacle.Box(9f, -5f, 1.35f, 1.25f, 0f, "OxygenGen"))
+        // 5. Sabatier Oxygen & Water Reactor: center (9f, -5f), width 2.2m, length 1.8m
+        worldObstacles.add(Obstacle.Box(9f, -5f, 1.40f, 1.25f, 0f, "OxygenGen"))
 
-        // 6. Communications Deep Space Network Dish
-        worldObstacles.add(Obstacle.Circle(-12f, -12f, 2.2f, "CommDish"))
+        // 6. Communications Deep Space Network Dish: center (-12f, -12f), dish radius 2.4m + pedestal
+        worldObstacles.add(Obstacle.Circle(-12f, -12f, 2.65f, "CommDish"))
 
-        // 7. Spacecraft Lander
-        worldObstacles.add(Obstacle.Circle(-24f, 4f, 3.8f, "SpaceLander"))
+        // 7. Spacecraft Lander: center (-24f, 4f), landing stage & 4 articulated struts extending to 4.2m
+        worldObstacles.add(Obstacle.Circle(-24f, 4f, 4.35f, "SpaceLander"))
 
-        // 8. Cryogenic Propellant & Life Support Storage Cluster
-        worldObstacles.add(Obstacle.Box(-17f, -2.5f, 1.65f, 1.35f, 0.35f, "CryoStorage"))
+        // 8. Cryogenic Propellant & Life Support Storage: center (-17f, -2.5f), rotY = 0.35f
+        worldObstacles.add(Obstacle.Box(-17f, -2.5f, 1.75f, 1.45f, 0.35f, "CryoStorage"))
 
-        // 9. Science Field Survey Station Rack
-        worldObstacles.add(Obstacle.Box(18.5f, 19.5f, 1.25f, 0.95f, -0.6f, "ScienceRack"))
+        // 9. Science Field Survey Station Rack: center (18.5f, 19.5f), rotY = -0.6f
+        worldObstacles.add(Obstacle.Box(18.5f, 19.5f, 1.40f, 1.05f, -0.6f, "ScienceRack"))
 
-        // 10. Water-Ice Deposit in South Crater
-        worldObstacles.add(Obstacle.Circle(22f, 25f, 1.35f, "IceDeposit"))
+        // 10. Water-Ice Deposit in South Crater: center (22f, 25f)
+        worldObstacles.add(Obstacle.Circle(22f, 25f, 1.85f, "IceDeposit"))
 
-        // 11. Hematite / Mineral Outcrop
-        worldObstacles.add(Obstacle.Circle(-26f, -18f, 1.35f, "HematiteDeposit"))
+        // 11. Hematite / Mineral Outcrop: center (-26f, -18f)
+        worldObstacles.add(Obstacle.Circle(-26f, -18f, 1.85f, "HematiteDeposit"))
 
         // 12. Perimeter Navigation Beacon Pylons (7 Waypoints)
         val beaconWaypoints = listOf(
@@ -82,40 +85,40 @@ object CollisionSystem {
             Vector3(13f, 0f, -8f)
         )
         for ((idx, b) in beaconWaypoints.withIndex()) {
-            worldObstacles.add(Obstacle.Circle(b.x, b.z, 0.55f, "Beacon_$idx"))
+            worldObstacles.add(Obstacle.Circle(b.x, b.z, 0.65f, "Beacon_$idx"))
         }
 
-        // 13. Natural Planetary Boulders (all 12 boulders from world generator)
+        // 13. Natural Planetary Boulders (all 12 boulders matching MeshFactory/GameViewModel)
         val boulderConfigs = listOf(
-            Pair(Vector3(18f, 0f, 19f), 1.35f),
-            Pair(Vector3(27f, 0f, 21f), 1.75f),
-            Pair(Vector3(-21f, 0f, -14f), 1.35f),
-            Pair(Vector3(-32f, 0f, -22f), 2.15f),
-            Pair(Vector3(29f, 0f, -8f), 1.55f),
-            Pair(Vector3(8f, 0f, -17f), 1.15f),
-            Pair(Vector3(-8f, 0f, 23f), 1.25f),
-            Pair(Vector3(-19f, 0f, 27f), 1.65f),
-            Pair(Vector3(24f, 0f, 15f), 1.45f),
-            Pair(Vector3(-15f, 0f, -9f), 1.15f),
-            Pair(Vector3(14f, 0f, 28f), 1.65f),
-            Pair(Vector3(-28f, 0f, 12f), 1.45f)
+            Pair(Vector3(18f, 0f, 19f), 1.70f),
+            Pair(Vector3(27f, 0f, 21f), 2.25f),
+            Pair(Vector3(-21f, 0f, -14f), 1.75f),
+            Pair(Vector3(-32f, 0f, -22f), 2.65f),
+            Pair(Vector3(29f, 0f, -8f), 1.95f),
+            Pair(Vector3(8f, 0f, -17f), 1.40f),
+            Pair(Vector3(-8f, 0f, 23f), 1.60f),
+            Pair(Vector3(-19f, 0f, 27f), 2.05f),
+            Pair(Vector3(24f, 0f, 15f), 1.85f),
+            Pair(Vector3(-15f, 0f, -9f), 1.50f),
+            Pair(Vector3(14f, 0f, 28f), 2.15f),
+            Pair(Vector3(-28f, 0f, 12f), 1.95f)
         )
         for ((idx, b) in boulderConfigs.withIndex()) {
             worldObstacles.add(Obstacle.Circle(b.first.x, b.first.z, b.second, "Boulder_$idx"))
         }
 
-        // 14. Outpost Personnel NPCs (prevent player from clipping through crew members)
-        worldObstacles.add(Obstacle.Circle(1.6f, 6.2f, 0.45f, "NPC_Vance"))
-        worldObstacles.add(Obstacle.Circle(13.2f, 4.2f, 0.45f, "NPC_Thorne"))
-        worldObstacles.add(Obstacle.Circle(8.0f, -3.8f, 0.45f, "NPC_Cole"))
-        worldObstacles.add(Obstacle.Circle(-4.0f, 8.5f, 0.45f, "NPC_Lin"))
-        worldObstacles.add(Obstacle.Circle(11.5f, 5.8f, 0.45f, "NPC_Turner"))
+        // 14. Outpost Personnel Crew NPCs
+        worldObstacles.add(Obstacle.Circle(1.6f, 6.2f, 0.55f, "NPC_Vance"))
+        worldObstacles.add(Obstacle.Circle(13.2f, 4.2f, 0.55f, "NPC_Thorne"))
+        worldObstacles.add(Obstacle.Circle(8.0f, -3.8f, 0.55f, "NPC_Cole"))
+        worldObstacles.add(Obstacle.Circle(-4.0f, 8.5f, 0.55f, "NPC_Lin"))
+        worldObstacles.add(Obstacle.Circle(11.5f, 5.8f, 0.55f, "NPC_Turner"))
     }
 
     /**
-     * Resolves continuous movement from (startX, startZ) to (desiredX, desiredZ)
-     * using axis-separated collision resolution and sliding response.
-     * Prevents penetration through all solid objects while allowing smooth gliding along walls/surfaces.
+     * Continuous sub-stepped and iterative sliding collision resolution.
+     * Prevents penetration through all solid objects (circular or OBB boxes),
+     * completely eliminating tunneling while providing smooth, fluid sliding along surfaces.
      */
     fun resolvePosition(
         startX: Float,
@@ -125,162 +128,230 @@ object CollisionSystem {
         entityRadius: Float,
         extraObstacles: List<Obstacle> = emptyList()
     ): Pair<Float, Float> {
-        var currentX = startX
-        var currentZ = startZ
+        val allObstacles = if (extraObstacles.isEmpty()) worldObstacles else worldObstacles + extraObstacles
 
-        // Step 1: Attempt movement along X axis first
-        var testX = desiredX
-        var testZ = currentZ
-        for (obs in worldObstacles) {
-            val (rx, rz) = resolveSingle(testX, testZ, obs, entityRadius)
-            testX = rx
-            testZ = rz
+        // 1. Ensure start position is not already penetrating any obstacle
+        var curX = startX
+        var curZ = startZ
+        for (obs in allObstacles) {
+            val (px, pz, hit) = pushOutOfObstacle(curX, curZ, obs, entityRadius)
+            if (hit) {
+                curX = px
+                curZ = pz
+            }
         }
-        for (obs in extraObstacles) {
-            val (rx, rz) = resolveSingle(testX, testZ, obs, entityRadius)
-            testX = rx
-            testZ = rz
-        }
-        currentX = testX
 
-        // Step 2: Attempt movement along Z axis
-        testX = currentX
-        testZ = desiredZ
-        for (obs in worldObstacles) {
-            val (rx, rz) = resolveSingle(testX, testZ, obs, entityRadius)
-            testX = rx
-            testZ = rz
-        }
-        for (obs in extraObstacles) {
-            val (rx, rz) = resolveSingle(testX, testZ, obs, entityRadius)
-            testX = rx
-            testZ = rz
-        }
-        currentZ = testZ
+        // 2. Sub-stepped continuous resolution to prevent tunneling at high sprint speeds
+        val deltaX = desiredX - curX
+        val deltaZ = desiredZ - curZ
+        val totalDist = hypot(deltaX, deltaZ)
 
-        // Step 3: Relaxation passes to resolve any residual penetration at acute angles or junctions
+        if (totalDist < 0.0001f) {
+            val boundary = 48.0f
+            return Pair(curX.coerceIn(-boundary, boundary), curZ.coerceIn(-boundary, boundary))
+        }
+
+        // Subdivide movement if moving fast (maximum step 0.10m)
+        val steps = ceil(totalDist / 0.10f).toInt().coerceIn(1, 8)
+        val stepDx = deltaX / steps
+        val stepDz = deltaZ / steps
+
+        for (s in 0 until steps) {
+            var nextX = curX + stepDx
+            var nextZ = curZ + stepDz
+
+            // Iterative collision resolution with sliding response
+            for (iter in 0 until 4) {
+                var collisionOccurred = false
+                for (obs in allObstacles) {
+                    val (resolvedX, resolvedZ, hit) = resolveAndSlide(curX, curZ, nextX, nextZ, obs, entityRadius)
+                    if (hit) {
+                        nextX = resolvedX
+                        nextZ = resolvedZ
+                        collisionOccurred = true
+                    }
+                }
+                if (!collisionOccurred) break
+            }
+
+            curX = nextX
+            curZ = nextZ
+        }
+
+        // 3. Final safety penetration enforcement passes
         for (pass in 0 until 2) {
-            for (obs in worldObstacles) {
-                val (rx, rz) = resolveSingle(currentX, currentZ, obs, entityRadius)
-                currentX = rx
-                currentZ = rz
-            }
-            for (obs in extraObstacles) {
-                val (rx, rz) = resolveSingle(currentX, currentZ, obs, entityRadius)
-                currentX = rx
-                currentZ = rz
+            for (obs in allObstacles) {
+                val (px, pz, hit) = pushOutOfObstacle(curX, curZ, obs, entityRadius)
+                if (hit) {
+                    curX = px
+                    curZ = pz
+                }
             }
         }
 
-        // Step 4: World perimeter boundary enforcement
-        val boundary = 50.0f
-        currentX = currentX.coerceIn(-boundary, boundary)
-        currentZ = currentZ.coerceIn(-boundary, boundary)
-
-        return Pair(currentX, currentZ)
+        // 4. World perimeter boundary enforcement
+        val boundary = 48.0f
+        return Pair(curX.coerceIn(-boundary, boundary), curZ.coerceIn(-boundary, boundary))
     }
 
-    private fun resolveSingle(
+    /**
+     * Resolves movement from (fromX, fromZ) to (toX, toZ) against an obstacle.
+     * If an intersection occurs, pushes the entity to the obstacle boundary and slides along the surface.
+     */
+    private fun resolveAndSlide(
+        fromX: Float,
+        fromZ: Float,
+        toX: Float,
+        toZ: Float,
+        obstacle: Obstacle,
+        entityRadius: Float
+    ): Triple<Float, Float, Boolean> {
+        val (pushedX, pushedZ, isHit, normX, normZ) = getPenetrationAndNormal(toX, toZ, obstacle, entityRadius)
+        if (!isHit) {
+            return Triple(toX, toZ, false)
+        }
+
+        // Vector of attempted motion
+        val vx = toX - fromX
+        val vz = toZ - fromZ
+        val dot = vx * normX + vz * normZ
+
+        // If moving toward obstacle surface, project remaining motion tangent to contact normal (slide)
+        val slideX = if (dot < 0f) vx - dot * normX else vx
+        val slideZ = if (dot < 0f) vz - dot * normZ else vz
+
+        val finalX = fromX + slideX
+        val finalZ = fromZ + slideZ
+
+        // Push firmly out to obstacle boundary along normal
+        val (safeX, safeZ, _) = pushOutOfObstacle(finalX, finalZ, obstacle, entityRadius)
+        return Triple(safeX, safeZ, true)
+    }
+
+    /**
+     * Pushes point (px, pz) strictly outside obstacle if it is within entityRadius.
+     */
+    private fun pushOutOfObstacle(
         px: Float,
         pz: Float,
         obstacle: Obstacle,
         entityRadius: Float
-    ): Pair<Float, Float> {
+    ): Triple<Float, Float, Boolean> {
+        val (pushedX, pushedZ, hit, _, _) = getPenetrationAndNormal(px, pz, obstacle, entityRadius)
+        return Triple(pushedX, pushedZ, hit)
+    }
+
+    /**
+     * Returns: (resolvedX, resolvedZ, hasOverlap, normalX, normalZ)
+     */
+    private fun getPenetrationAndNormal(
+        px: Float,
+        pz: Float,
+        obstacle: Obstacle,
+        entityRadius: Float
+    ): PenetrationResult {
         return when (obstacle) {
-            is Obstacle.Circle -> resolveCircle(px, pz, obstacle.x, obstacle.z, obstacle.radius, entityRadius)
-            is Obstacle.Box -> resolveBox(
-                px, pz,
-                obstacle.x, obstacle.z,
-                obstacle.halfWidth, obstacle.halfLength,
-                obstacle.rotationY,
-                entityRadius
-            )
+            is Obstacle.Circle -> {
+                val dx = px - obstacle.x
+                val dz = pz - obstacle.z
+                val distSq = dx * dx + dz * dz
+                val minDist = obstacle.radius + entityRadius + 0.015f
+
+                if (distSq < minDist * minDist) {
+                    val dist = sqrt(distSq)
+                    val nx = if (dist > 0.0001f) dx / dist else 1f
+                    val nz = if (dist > 0.0001f) dz / dist else 0f
+                    PenetrationResult(
+                        obstacle.x + nx * minDist,
+                        obstacle.z + nz * minDist,
+                        true,
+                        nx,
+                        nz
+                    )
+                } else {
+                    PenetrationResult(px, pz, false, 0f, 0f)
+                }
+            }
+
+            is Obstacle.Box -> {
+                val cosR = cos(-obstacle.rotationY)
+                val sinR = sin(-obstacle.rotationY)
+                val dx = px - obstacle.x
+                val dz = pz - obstacle.z
+                val localX = dx * cosR - dz * sinR
+                val localZ = dx * sinR + dz * cosR
+
+                val halfW = obstacle.halfWidth
+                val halfL = obstacle.halfLength
+
+                val clampedX = localX.coerceIn(-halfW, halfW)
+                val clampedZ = localZ.coerceIn(-halfL, halfL)
+
+                val diffX = localX - clampedX
+                val diffZ = localZ - clampedZ
+                val distSq = diffX * diffX + diffZ * diffZ
+                val margin = entityRadius + 0.015f
+
+                val cosW = cos(obstacle.rotationY)
+                val sinW = sin(obstacle.rotationY)
+
+                if (distSq < 0.000001f) {
+                    // Center is strictly inside box volume: push outward to nearest face
+                    val penL = localX - (-halfW)
+                    val penR = halfW - localX
+                    val penB = localZ - (-halfL)
+                    val penF = halfL - localZ
+                    val minPen = minOf(penL, penR, penB, penF)
+
+                    val (lnx, lnz) = when (minPen) {
+                        penL -> Pair(-1f, 0f)
+                        penR -> Pair(1f, 0f)
+                        penB -> Pair(0f, -1f)
+                        else -> Pair(0f, 1f)
+                    }
+
+                    val newLocalX = when (minPen) {
+                        penL -> -halfW - margin
+                        penR -> halfW + margin
+                        else -> localX
+                    }
+                    val newLocalZ = when (minPen) {
+                        penB -> -halfL - margin
+                        penF -> halfL + margin
+                        else -> localZ
+                    }
+
+                    val worldNx = lnx * cosW - lnz * sinW
+                    val worldNz = lnx * sinW + lnz * cosW
+                    val resX = obstacle.x + newLocalX * cosW - newLocalZ * sinW
+                    val resZ = obstacle.z + newLocalX * sinW + newLocalZ * cosW
+                    PenetrationResult(resX, resZ, true, worldNx, worldNz)
+                } else if (distSq < margin * margin) {
+                    // Center is outside box but within margin radius
+                    val dist = sqrt(distSq)
+                    val lnx = diffX / dist
+                    val lnz = diffZ / dist
+
+                    val newLocalX = clampedX + lnx * margin
+                    val newLocalZ = clampedZ + lnz * margin
+
+                    val worldNx = lnx * cosW - lnz * sinW
+                    val worldNz = lnx * sinW + lnz * cosW
+                    val resX = obstacle.x + newLocalX * cosW - newLocalZ * sinW
+                    val resZ = obstacle.z + newLocalX * sinW + newLocalZ * cosW
+                    PenetrationResult(resX, resZ, true, worldNx, worldNz)
+                } else {
+                    PenetrationResult(px, pz, false, 0f, 0f)
+                }
+            }
         }
     }
 
-    private fun resolveCircle(
-        px: Float,
-        pz: Float,
-        cx: Float,
-        cz: Float,
-        obstacleRadius: Float,
-        entityRadius: Float
-    ): Pair<Float, Float> {
-        val totalR = obstacleRadius + entityRadius
-        val dx = px - cx
-        val dz = pz - cz
-        val distSq = dx * dx + dz * dz
-
-        if (distSq < totalR * totalR) {
-            val dist = sqrt(distSq)
-            return if (dist > 0.0001f) {
-                val nx = dx / dist
-                val nz = dz / dist
-                Pair(cx + nx * totalR, cz + nz * totalR)
-            } else {
-                Pair(cx + totalR, cz)
-            }
-        }
-        return Pair(px, pz)
-    }
-
-    private fun resolveBox(
-        px: Float,
-        pz: Float,
-        cx: Float,
-        cz: Float,
-        halfW: Float,
-        halfL: Float,
-        rotY: Float,
-        entityRadius: Float
-    ): Pair<Float, Float> {
-        val cosR = cos(-rotY)
-        val sinR = sin(-rotY)
-        val dx = px - cx
-        val dz = pz - cz
-        val localX = dx * cosR - dz * sinR
-        val localZ = dx * sinR + dz * cosR
-
-        val clampedX = localX.coerceIn(-halfW, halfW)
-        val clampedZ = localZ.coerceIn(-halfL, halfL)
-
-        val diffX = localX - clampedX
-        val diffZ = localZ - clampedZ
-        val distSq = diffX * diffX + diffZ * diffZ
-
-        val cosW = cos(rotY)
-        val sinW = sin(rotY)
-
-        if (distSq < 0.000001f) {
-            // Point is strictly inside box volume: push outward to nearest face
-            val penLeft = localX - (-halfW)
-            val penRight = halfW - localX
-            val penBack = localZ - (-halfL)
-            val penFront = halfL - localZ
-            val minPen = minOf(penLeft, penRight, penBack, penFront)
-
-            val newLocalX = when (minPen) {
-                penLeft -> -halfW - entityRadius
-                penRight -> halfW + entityRadius
-                else -> localX
-            }
-            val newLocalZ = when (minPen) {
-                penBack -> -halfL - entityRadius
-                penFront -> halfL + entityRadius
-                else -> localZ
-            }
-            return Pair(cx + newLocalX * cosW - newLocalZ * sinW, cz + newLocalX * sinW + newLocalZ * cosW)
-        }
-
-        if (distSq < entityRadius * entityRadius) {
-            val dist = sqrt(distSq)
-            val nx = diffX / dist
-            val nz = diffZ / dist
-            val newLocalX = clampedX + nx * entityRadius
-            val newLocalZ = clampedZ + nz * entityRadius
-            return Pair(cx + newLocalX * cosW - newLocalZ * sinW, cz + newLocalX * sinW + newLocalZ * cosW)
-        }
-
-        return Pair(px, pz)
-    }
+    private data class PenetrationResult(
+        val resolvedX: Float,
+        val resolvedZ: Float,
+        val hit: Boolean,
+        val normX: Float,
+        val normZ: Float
+    )
 }

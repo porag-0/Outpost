@@ -719,29 +719,38 @@ class GameViewModel : ViewModel() {
                 else -> 3.6f
             }
 
-            val hasInput = abs(moveX) > 0.05f || abs(moveY) > 0.05f
+            val hasInput = abs(moveX) > 0.01f || abs(moveY) > 0.01f
             var targetVelX = 0f
             var targetVelZ = 0f
             var targetAngle = state.playerRotationY
 
             if (hasInput) {
                 val inputMag = kotlin.math.hypot(moveX, moveY).coerceIn(0f, 1f)
-                val moveAngle = atan2(moveX, -moveY) + state.cameraYaw
-                targetAngle = moveAngle
-                targetVelX = sin(moveAngle) * speed * inputMag
-                targetVelZ = -cos(moveAngle) * speed * inputMag
+                // Project 2D joystick coordinates onto horizontal camera orientation:
+                // camForward = (-sin(yaw), -cos(yaw)), camRight = (cos(yaw), -sin(yaw))
+                // Joystick Up (moveY < 0) -> +camForward, Joystick Right (moveX > 0) -> +camRight
+                val desiredX = cos(state.cameraYaw) * moveX + sin(state.cameraYaw) * moveY
+                val desiredZ = -sin(state.cameraYaw) * moveX + cos(state.cameraYaw) * moveY
+
+                targetVelX = desiredX * speed
+                targetVelZ = desiredZ * speed
+
+                // Astronaut mesh natively faces +Z locally.
+                // In world space, mesh facing vector is (sin(rot), 0, cos(rot)).
+                // To face exactly towards (desiredX, desiredZ), targetAngle = atan2(desiredX, desiredZ):
+                targetAngle = atan2(desiredX, desiredZ)
             }
 
-            // Smooth linear acceleration and deceleration with low-G inertia
-            val accel = if (hasInput) 9.0f else 7.5f
+            // High-responsiveness acceleration and deceleration for professional esports-grade feel
+            val accel = if (hasInput) 16.0f else 14.0f
             currentVelX += (targetVelX - currentVelX) * (dt * accel).coerceIn(0f, 1f)
             currentVelZ += (targetVelZ - currentVelZ) * (dt * accel).coerceIn(0f, 1f)
 
             val horizontalSpeed = kotlin.math.hypot(currentVelX, currentVelZ)
 
-            // Smooth shortest-path angular slerp/lerp
+            // Smooth shortest-path angular slerp/lerp with snappy responsiveness
             val newRot = if (hasInput) {
-                lerpAngle(state.playerRotationY, targetAngle, (dt * 10.5f).coerceIn(0f, 1f))
+                lerpAngle(state.playerRotationY, targetAngle, (dt * 14.0f).coerceIn(0f, 1f))
             } else {
                 state.playerRotationY
             }
@@ -761,7 +770,7 @@ class GameViewModel : ViewModel() {
             val rawNextZ = newPos.z + currentVelZ * dt
 
             // Check collision against all structures, dome, boulders, machines, and parked rover
-            val extraObs = listOf(CollisionSystem.Obstacle.Circle(roverPos.x, roverPos.z, 1.45f, "ParkedRover"))
+            val extraObs = listOf(CollisionSystem.Obstacle.Circle(roverPos.x, roverPos.z, 1.75f, "ParkedRover"))
             val (nextX, nextZ) = CollisionSystem.resolvePosition(
                 startX = newPos.x,
                 startZ = newPos.z,
@@ -785,7 +794,7 @@ class GameViewModel : ViewModel() {
             val terrainNorm = MeshFactory.getTerrainNormal(nextX, nextZ)
 
             // Posture slope adaptation: forward lean uphill, backward lean downhill
-            val forwardDir = Vector3(sin(newRot), 0f, -cos(newRot))
+            val forwardDir = Vector3(sin(newRot), 0f, cos(newRot))
             val targetSlopePitch = (-forwardDir.x * terrainNorm.x - forwardDir.z * terrainNorm.z) * 0.60f
             playerSlopePitch += (targetSlopePitch - playerSlopePitch) * (dt * 6.5f).coerceIn(0f, 1f)
 
@@ -858,7 +867,7 @@ class GameViewModel : ViewModel() {
 
             roverSteer += (steerInput * 0.48f - roverSteer) * (dt * 7.5f).coerceIn(0f, 1f)
             val newRot = state.playerRotationY + roverSteer * throttleInput * dt * 2.2f
-            val driveDir = Vector3(sin(newRot), 0f, -cos(newRot))
+            val driveDir = Vector3(sin(newRot), 0f, cos(newRot))
             val forwardVel = throttleInput * roverSpeed * dt
 
             val rawNextX = newPos.x + driveDir.x * forwardVel
